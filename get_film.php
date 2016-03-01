@@ -42,7 +42,7 @@ require_once("get_film_data.php");
 				{
 					get_film_lecteur_and_infos($line);
 					$lector = 1;
-					break ;
+					//break ;
 				}
 				$index = 0;
 				$line = NULL;
