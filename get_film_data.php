@@ -339,5 +339,10 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 		echo "\e[0;34m";
 		echo $film_country;
 		echo "\n";
+
+		$link = mysql_connect("localhost", "root", "123456");
+		mysql_select_db("strizzstream");
+		mysql_query("SET NAMES UTF8");
+		mysql_query('INSERT INTO films(film_name,film_name_alias,film_summary,film_img,film_country,film_year,film_length,film_actors,film_category,film_link) VALUES("'.$film_name.'", "'.$film_name_alias.'", "'.$film_summary.'", "'.$film_img.'", "'.$film_country.'", "'.$film_year.'", "'.$film_length.'", "'.$film_actors.'", "'.$film_category.'", "'.$film_lector.'")') or die(mysql_error());
 	}
 ?>

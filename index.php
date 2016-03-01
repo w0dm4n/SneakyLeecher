@@ -30,33 +30,42 @@ function handle_line_and_send_link($line)
 	echo "\n";
 	get_film('http://www.dpstream.net/'.$link.'');
 }
-
-	$url = "http://www.dpstream.net/fichiers/includes/inc_liste_film/fonction_liste_film2.php?p=0-0-1-0-0-0-0-0-0-0";
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url); 
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	$output = curl_exec($ch); 
-	curl_close($ch);
-	$line = NULL;
-	$var = 0;
-	$index = 0;
-	while ($output[$var] != NULL)
+	$page = 1;
+	while ($page <= 190)
 	{
-		if (!strcmp($output[$var], "\n"))
+		echo "\n";
+		echo "\e[0;31m";
+		echo 'NEW PAGE FOUND : '.$page.'';
+		echo "\n";
+
+		$url = 'http://www.dpstream.net/fichiers/includes/inc_liste_film/fonction_liste_film2.php?p=0-0-'.$page.'-0-0-0-0-0-0-0';
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$output = curl_exec($ch); 
+		curl_close($ch);
+		$line = NULL;
+		$var = 0;
+		$index = 0;
+		while ($output[$var] != NULL)
 		{
-			if (strpos($line, "class=\"lienfilm\""))
+			if (!strcmp($output[$var], "\n"))
 			{
-				handle_line_and_send_link($line);
-				//break ;
+				if (strpos($line, "class=\"lienfilm\""))
+				{
+					handle_line_and_send_link($line);
+					//break ;
+				}
+				$index = 0;
+				$line = NULL;
 			}
-			$index = 0;
-			$line = NULL;
+			else
+			{
+				$line = ''.$line.''.$output[$var].'';
+				$index++;
+			}
+			$var++;
 		}
-		else
-		{
-			$line = ''.$line.''.$output[$var].'';
-			$index++;
-		}
-		$var++;
+		$page++;
 	}
 ?>
